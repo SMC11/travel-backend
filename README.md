@@ -11,7 +11,7 @@ This application allows users to create and maintain a list of recipes that have
 1. Clone the project into your **XAMPP/xamppfiles/htdocs** directory.
 
 ```
-git clone https://github.com/OC-ComputerScience/recipe-backend.git
+git clone https://github.com/SMC11/travel-backend.git
 ```
 
 2. Install the project.
@@ -42,7 +42,7 @@ npm install
    - Save the file.
    - **Restart Apache** and exit XAMPP.
 
-4. Make a local **recipe_db** database.
+4. Make a local **travel_db** database.
 
    - Create a schema/database.
    - The Sequelize in this project will make all the tables for you.
@@ -52,7 +52,7 @@ npm install
    - DB_HOST = 'localhost'
    - DB_PW = '**your-local-database-password**'
    - DB_USER = '**your-local-database-username**' (usually "root")
-   - DB_NAME = '**your-local-database-name**' (example: "recipe_db")
+   - DB_NAME = '**your-local-database-name**' (example: "travel_db")
    - SECRET_KEY = 'xT1tdO3CfMH01pjxC+guN1LWSt2nKvr5td6KUpw7Czg='
 
 6. Compile and run the project locally.
