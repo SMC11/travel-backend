@@ -14,13 +14,16 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+db.itinerary = require("./itinerary.model.js")(sequelize, Sequelize);
+db.itineraryDay = require("./itineraryDay.model.js")(sequelize, Sequelize);
+db.site = require("./site.model.js")(sequelize, Sequelize);
+db.hotel = require("./hotel.model.js")(sequelize, Sequelize);
+db.subscription = require("./subscription.model.js")(sequelize, Sequelize);
+db.emailActivity = require("./emailActivity.model.js")(sequelize, Sequelize);
 db.ingredient = require("./ingredient.model.js")(sequelize, Sequelize);
 db.recipe = require("./recipe.model.js")(sequelize, Sequelize);
 db.recipeStep = require("./recipeStep.model.js")(sequelize, Sequelize);
-db.recipeIngredient = require("./recipeIngredient.model.js")(
-  sequelize,
-  Sequelize
-);
+db.recipeIngredient = require("./recipeIngredient.model.js")(sequelize, Sequelize);
 db.session = require("./session.model.js")(sequelize, Sequelize);
 db.user = require("./user.model.js")(sequelize, Sequelize);
 
@@ -35,6 +38,99 @@ db.session.belongsTo(
   { as: "user" },
   { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
 );
+
+// foreign keys for itinerary
+db.user.hasMany(
+  db.itinerary,
+  { as: "itinerary"},
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE" }
+);
+db.itinerary.belongsTo(
+  db.user,
+  { as: "user" },
+  { foreignKey: { allowNull: true }, onDelete: "CASCADE" }
+);
+
+//foreign key for itineraryDay
+db.itinerary.hasMany(
+  db.itineraryDay,
+  { as: "itineraryDay"},
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE"}
+);
+db.itineraryDay.belongsTo(
+  db.itinerary,
+  { as: "itinerary" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
+);
+
+//foreign key for hotel
+db.itineraryDay.hasMany(
+  db.hotel,
+  { as: "hotel"},
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE"}
+);
+db.hotel.belongsTo(
+  db.itineraryDay,
+  { as: "itineraryDay" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
+);
+
+//foreign key for site
+db.itineraryDay.hasMany(
+  db.site,
+  { as: "site"},
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE"}
+);
+db.site.belongsTo(
+  db.itineraryDay,
+  { as: "itineraryDay" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
+);
+
+//foreign key for subscription
+db.user.hasMany(
+  db.subscription,
+  { as: "subscription"},
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE"}
+);
+db.subscription.belongsTo(
+  db.user,
+  { as: "user" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
+);
+db.itinerary.hasMany(
+  db.subscription,
+  { as: "subscription"},
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE"}
+);
+db.subscription.belongsTo(
+  db.itinerary,
+  { as: "itinerary" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
+);
+
+//foreign key for emailActivity
+db.user.hasMany(
+  db.emailActivity,
+  { as: "emailActivity"},
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE"}
+);
+db.emailActivity.belongsTo(
+  db.user,
+  { as: "user" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
+);
+db.itinerary.hasMany(
+  db.emailActivity,
+  { as: "emailActivity"},
+  { foreignKey: { allowNull: false }, onDelete: "CASCADE"}
+);
+db.emailActivity.belongsTo(
+  db.itinerary,
+  { as: "itinerary" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
+);
+
 
 // foreign key for recipe
 db.user.hasMany(
