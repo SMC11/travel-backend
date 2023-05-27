@@ -15,6 +15,10 @@ exports.create = async (req, res) => {
     const error = new Error("Last name cannot be empty for user!");
     error.statusCode = 400;
     throw error;
+  } else if (req.body.phoneNumber === undefined) {
+    const error = new Error("Phone Number cannot be empty for user!");
+    error.statusCode = 400;
+    throw error;
   } else if (req.body.email === undefined) {
     const error = new Error("Email cannot be empty for user!");
     error.statusCode = 400;
@@ -45,6 +49,7 @@ exports.create = async (req, res) => {
           id: req.body.id,
           firstName: req.body.firstName,
           lastName: req.body.lastName,
+          phoneNumber: req.body.phoneNumber,
           email: req.body.email,
           password: hash,
           salt: salt,
@@ -71,6 +76,7 @@ exports.create = async (req, res) => {
                 email: user.email,
                 firstName: user.firstName,
                 lastName: user.lastName,
+                phoneNumber: user.phoneNumber,
                 id: user.id,
                 token: token,
               };
