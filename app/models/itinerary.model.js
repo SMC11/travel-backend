@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       photo: {
         type: Sequelize.BLOB,
-        allowNull: false,
+        allowNull: true,
       },
     });
     return Itinerary;

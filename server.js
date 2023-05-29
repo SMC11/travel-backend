@@ -2,7 +2,9 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
+const multer = require('multer');
 
+const upload = multer({dest: 'uploads/'});
 const app = express();
 
 const db = require("./app/models");
@@ -27,9 +29,13 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to the recipe backend." });
 });
 
+app.post('/photo/upload', upload.single('file'), (req, res) => {
+
+});
+
 require("./app/routes/auth.routes.js")(app);
 require("./app/routes/ingredient.routes")(app);
-require("./app/routes/recipe.routes")(app);
+require("./app/routes/itinerary.routes")(app);
 require("./app/routes/recipeStep.routes")(app);
 require("./app/routes/recipeIngredient.routes")(app);
 require("./app/routes/user.routes")(app);
