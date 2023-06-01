@@ -2,6 +2,7 @@ const db = require("../models");
 const Itinerary = db.itinerary;
 const Subscription = db.subscription;
 const ItineraryDay = db.itineraryDay;
+const ItineraryDayEvent = db.itineraryDayEvent;
 const Site = db.site;
 const Hotel = db.hotel;
 const Op = db.Sequelize.Op;
@@ -59,11 +60,9 @@ exports.create = (req, res) => {
     });
 };
 
-// Find all Itineraries for a user
-exports.findAllForUser = (req, res) => {
-  const userId = req.params.userId;
+// Find all Itineraries
+exports.findAll = (req, res) => {
   Itinerary.findAll({
-    where: { userId: userId },
     include: [
       {
         model: ItineraryDay,
@@ -71,15 +70,11 @@ exports.findAllForUser = (req, res) => {
         required: false,
         include: [
           {
-            model: Site,
-            as: "site",
+            model: ItineraryDayEvent,
+            as: "itineraryDayEvent",
             required: false,
-          },
-          {
-            model: Hotel,
-            as: "hotel",
-            required: false,
-          },
+            
+          }
         ],
       },
     ],
@@ -92,14 +87,14 @@ exports.findAllForUser = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Itineraries for user with id=${userId}.`,
+          message: `Cannot find Itineraries`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Error retrieving Itineraries for user with id=" + userId,
+          err.message || "Error retrieving Itineraries",
       });
     });
 };

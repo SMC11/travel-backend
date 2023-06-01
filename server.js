@@ -36,6 +36,7 @@ app.post('/photo/upload', upload.single('file'), (req, res) => {
 require("./app/routes/auth.routes.js")(app);
 require("./app/routes/ingredient.routes")(app);
 require("./app/routes/itinerary.routes")(app);
+require("./app/routes/hotel.routes")(app);
 require("./app/routes/recipeStep.routes")(app);
 require("./app/routes/recipeIngredient.routes")(app);
 require("./app/routes/user.routes")(app);
