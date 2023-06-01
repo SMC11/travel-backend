@@ -107,20 +107,16 @@ exports.findAllSubscribed = (req, res) => {
     where: { userId: userId },
     include: [
       {
-        model: Itinerary,
-        as: "itinerary",
+        model: ItineraryDay,
+        as: "itineraryDay",
         required: false,
         include: [
           {
-            model: Site,
-            as: "site",
+            model: ItineraryDayEvent,
+            as: "itineraryDayEvent",
             required: false,
-          },
-          {
-            model: Hotel,
-            as: "hotel",
-            required: false,
-          },
+            
+          }
         ],
       },
     ],
@@ -156,15 +152,11 @@ exports.findOne = (req, res) => {
         required: false,
         include: [
           {
-            model: Site,
-            as: "site",
+            model: ItineraryDayEvent,
+            as: "itineraryDayEvent",
             required: false,
-          },
-          {
-            model: Hotel,
-            as: "hotel",
-            required: false,
-          },
+            
+          }
         ],
       },
     ],
