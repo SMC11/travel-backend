@@ -1,57 +1,62 @@
 const db = require("../models");
-const Hotel = db.hotel;
+const Site = db.site;
 const Subscription = db.subscription;
 const Op = db.Sequelize.Op;
-// Create and Save a new Hotel
+// Create and Save a new Site
 exports.create = (req, res) => {
   console.log(req);
   // Validate request
   if (req.body.name === undefined) {
-    const error = new Error("Name cannot be empty for Hotel!");
+    const error = new Error("Name cannot be empty for Site!");
+    error.statusCode = 400;
+    throw error;
+  } else if (req.body.description === undefined) {
+    const error = new Error("Description cannot be empty for Site!");
+    error.statusCode = 400;
+    throw error;
+  } else if (req.body.duration === undefined) {
+    const error = new Error("Duration cannot be empty for Site!");
     error.statusCode = 400;
     throw error;
   } else if (req.body.address === undefined) {
-    const error = new Error("Address cannot be empty for Hotel!");
-    error.statusCode = 400;
-    throw error;
-  } else if (req.body.phone === undefined) {
-    const error = new Error("Phone cannot be empty for Hotel!");
+    const error = new Error("Address cannot be empty for Site!");
     error.statusCode = 400;
     throw error;
   } else if (req.body.link === undefined) {
-    const error = new Error("Link cannot be empty for Hotel!");
+    const error = new Error("Link cannot be empty for Site!");
     error.statusCode = 400;
     throw error;
   } else if (req.body.photo === undefined) {
-    const error = new Error("Photo cannot be empty for Hotel!");
+    const error = new Error("Photo cannot be empty for Site!");
     error.statusCode = 400;
     throw error;
   }
 
-  // Create a Hotel
-  const hotel = {
+  // Create a Site
+  const site = {
     name: req.body.name,
     address: req.body.address,
-    phone: req.body.phone,
+    description: req.body.description,
+    duration: req.body.duration,
     link: req.body.link,
     photo: req.body.photo,
   };
-  // Save Hotel in the database
-  Hotel.create(hotel)
+  // Save Site in the database
+  Site.create(site)
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Hotel.",
+          err.message || "Some error occurred while creating the Site.",
       });
     });
 };
 
-// Find all Hotels
+// Find all Sites
 exports.findAll = (req, res) => {
-  Hotel.findAll({
+  Site.findAll({
     order: [
       ["name", "ASC"],
     ],
@@ -61,45 +66,45 @@ exports.findAll = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find all Hotels.`,
+          message: `Cannot find all Sites.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Error retrieving Hotels.",
+          err.message || "Error retrieving Sites.",
       });
     });
 };
 
-// Find Hotel for ItineraryDay
-exports.findAllForItineraryDay = (req, res) => {
-  const itineraryDayId = req.params.itineraryDayId;
+// Find Site for ItineraryDayEvent
+exports.findAllForItineraryDayEvent = (req, res) => {
+  const itineraryDayEventId = req.params.itineraryDayEventId;
 
   Subscription.findAll({
-    where: { itineraryDayId: itineraryDayId },
+    where: { itineraryDayEventId: itineraryDayEventId },
   })
     .then((data) => {
       if (data) {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Hotel for ItineraryDay.`,
+          message: `Cannot find Site for ItineraryDayEvent.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error retrieving Hotel for ItineraryDay.",
+        message: err.message || "Error retrieving Site for ItineraryDayEvent.",
       });
     });
 };
 
-// Find a single Hotel with an id
+// Find a single Site with an id
 exports.findOne = (req, res) => {
   const id = req.params.id;
-  Hotel.findAll({
+  Site.findAll({
     where: { id: id },
   })
     .then((data) => {
@@ -107,75 +112,75 @@ exports.findOne = (req, res) => {
         res.send(data);
       } else {
         res.status(404).send({
-          message: `Cannot find Hotel with id=${id}.`,
+          message: `Cannot find Site with id=${id}.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error retrieving Hotel with id=" + id,
+        message: err.message || "Error retrieving Site with id=" + id,
       });
     });
 };
-// Update a Hotel by the id in the request
+// Update a Site by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  Hotel.update(req.body, {
+  Site.update(req.body, {
     where: { id: id },
   })
     .then((number) => {
       if (number == 1) {
         res.send({
-          message: "Hotel was updated successfully.",
+          message: "Site was updated successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Hotel with id=${id}. Maybe Hotel was not found or req.body is empty!`,
+          message: `Cannot update Site with id=${id}. Maybe Site was not found or req.body is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Error updating Hotel with id=" + id,
+        message: err.message || "Error updating Site with id=" + id,
       });
     });
 };
-// Delete a Hotel with the specified id in the request
+// Delete a Site with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-  Hotel.destroy({
+  Site.destroy({
     where: { id: id },
   })
     .then((number) => {
       if (number == 1) {
         res.send({
-          message: "Hotel was deleted successfully!",
+          message: "Site was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Hotel with id=${id}. Maybe Hotel was not found!`,
+          message: `Cannot delete Site with id=${id}. Maybe Site was not found!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Could not delete Hotel with id=" + id,
+        message: err.message || "Could not delete Site with id=" + id,
       });
     });
 };
-// Delete all Hotels from the database.
+// Delete all Sites from the database.
 exports.deleteAll = (req, res) => {
-  Hotel.destroy({
+  Site.destroy({
     where: {},
     truncate: false,
   })
     .then((number) => {
-      res.send({ message: `${number} Hotels were deleted successfully!` });
+      res.send({ message: `${number} Sites were deleted successfully!` });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all Hotels.",
+          err.message || "Some error occurred while removing all Sites.",
       });
     });
 };
