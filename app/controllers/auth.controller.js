@@ -32,6 +32,7 @@ exports.login = async (req, res) => {
         phoneNumber: user.phoneNumber,
         id: user.id,
         token: token,
+        role: user.role,
       };
       res.send(userInfo);
     });
