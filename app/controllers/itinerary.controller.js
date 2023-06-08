@@ -73,7 +73,13 @@ exports.findAll = (req, res) => {
             model: ItineraryDayEvent,
             as: "itineraryDayEvent",
             required: false,
-            
+            include: [
+              {
+                model: Site,
+                as: "site",
+                required: false,
+              }
+            ],
           }
         ],
       },
@@ -107,6 +113,11 @@ exports.findAllSubscribed = (req, res) => {
     where: { userId: userId },
     include: [
       {
+        model: Itinerary,
+        as: "itinerary",
+        required: false,
+        include: [
+      {
         model: ItineraryDay,
         as: "itineraryDay",
         required: false,
@@ -115,17 +126,26 @@ exports.findAllSubscribed = (req, res) => {
             model: ItineraryDayEvent,
             as: "itineraryDayEvent",
             required: false,
-            
+            include: [
+              {
+                model: Site,
+                as: "site",
+                required: false,
+              }
+            ],
           }
         ],
       },
     ],
+    },
+  ],
     order: [
       ["updatedAt", "DESC"],
     ],
   })
     .then((data) => {
       if (data) {
+        data = data.map(subscription => subscription.itinerary);
         res.send(data);
       } else {
         res.status(404).send({
@@ -152,13 +172,27 @@ exports.findOne = (req, res) => {
         required: false,
         include: [
           {
+            model: Hotel,
+            as: "hotel",
+            required: false,
+          },
+          {
             model: ItineraryDayEvent,
             as: "itineraryDayEvent",
             required: false,
-            
+            include: [
+              {
+                model: Site,
+                as: "site",
+                required: false,
+              }
+            ],
           }
         ],
       },
+    ],
+    order: [
+      [db.Sequelize.col("itineraryDay.dayOfEvent"), "ASC"],
     ],
   })
     .then((data) => {
