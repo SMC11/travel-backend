@@ -8,6 +8,15 @@ module.exports = (app) => {
 
   // Retrieve all Users
   router.get("/users/", User.findAll);
+  
+  // Retrieve all User Subscriptions
+  router.get("/users/:id/subscriptions/", User.findSubscriptions);
+
+  // Subscribe to Itinerary
+  router.post("/users/:id/subscriptions/:itineraryId", User.subscribe);
+
+  // Unsubscribe to Itinerary
+  router.delete("/users/:id/subscriptions/:itineraryId", User.unsubscribe);
 
   // Retrieve a single User with id
   router.get("/users/:id", User.findOne);
