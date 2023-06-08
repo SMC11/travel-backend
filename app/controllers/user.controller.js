@@ -1,5 +1,6 @@
 const db = require("../models");
 const User = db.user;
+const Subscription = db.subscription;
 const Session = db.session;
 const Op = db.Sequelize.Op;
 const { encrypt, getSalt, hashPassword } = require("../authentication/crypto");
@@ -112,6 +113,61 @@ exports.findAll = (req, res) => {
       });
     });
 };
+
+// Retrieve all User Subscriptions from the database.
+exports.findSubscriptions = (req, res) => {
+  const id = req.query.id;
+  var condition = id ? { userId: { [Op.like]: `%${id}%` } } : null;
+
+  Subscription.findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving user subscriptions.",
+      });
+    });
+};
+// Subscribe a user to an Itinerary
+exports.subscribe = (req, res) => {
+  const id = req.params.id;
+  const itineraryId = req.params.itineraryId;
+  const subscription = {
+    userId: id,
+    itineraryId: itineraryId,
+  };
+  Subscription.create(subscription)
+  .then((data) => {
+    res.send({ message: `Subscribed successfully!` });
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while subscribing to itinerary.",
+    });
+  });
+}
+
+// Subscribe a user to an Itinerary
+exports.unsubscribe = (req, res) => {
+  const id = req.params.id;
+  const itineraryId = req.params.itineraryId;
+  Subscription.destroy({
+    where: { userId: id, itineraryId: itineraryId },
+  })
+  .then((number) => {
+    res.send({ message: `Unsubscribed successfully!` });
+  })
+  .catch((err) => {
+    console.log(err);
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while subscribing to itinerary.",
+    });
+  });
+}
 
 // Find a single User with an id
 exports.findOne = (req, res) => {
