@@ -66,6 +66,11 @@ db.hotel.hasOne(
   { as: "hotel"},
   { foreignKey: { allowNull: true }, onDelete: "SET NULL"}
 );
+db.itineraryDay.belongsTo(
+  db.hotel,
+  { as: "hotel"},
+  { foreignKey: { allowNull: true }, onDelete: "SET NULL"}
+);
 
 //foreign key for itineraryDayEvent
 db.itineraryDay.hasMany(
@@ -76,6 +81,11 @@ db.itineraryDay.hasMany(
 db.itineraryDayEvent.belongsTo(
   db.itineraryDay,
   { as: "itineraryDay" },
+  { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
+);
+db.itineraryDayEvent.belongsTo(
+  db.site,
+  { as: "site" },
   { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
 );
 
