@@ -1,4 +1,5 @@
 const db = require("../models");
+const User = db.user;
 const Itinerary = db.itinerary;
 const Subscription = db.subscription;
 const ItineraryDay = db.itineraryDay;
@@ -190,6 +191,18 @@ exports.findOne = (req, res) => {
           }
         ],
       },
+      {
+        model: Subscription,
+        as: "subscription",
+        required: false,
+        include: [
+          {
+            model: User,
+            as: "user",
+            required: false,
+          }
+        ]
+      }
     ],
     order: [
       [db.Sequelize.col("itineraryDay.dayOfEvent"), "ASC"],
