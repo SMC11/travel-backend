@@ -12,6 +12,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    maps: {
+      type: Sequelize.STRING(2048),
+      allowNull: false,
+    },  
     link: {
       type: Sequelize.STRING(2048),
       allowNull: false,

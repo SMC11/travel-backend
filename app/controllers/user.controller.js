@@ -100,7 +100,7 @@ exports.create = async (req, res) => {
 
 // Retrieve all Users from the database.
 exports.findAll = (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id;
   var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
 
   User.findAll({ where: condition })
@@ -116,7 +116,13 @@ exports.findAll = (req, res) => {
 
 // Retrieve all User Subscriptions from the database.
 exports.findSubscriptions = (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id;
+  // if (id === undefined || id <= 0) {
+  //   res.status(400).send({
+  //     message: "Id cannot be empty for user!",
+  //   });
+  //   return;
+  // }
   var condition = id ? { userId: { [Op.like]: `%${id}%` } } : null;
 
   Subscription.findAll({ where: condition })
