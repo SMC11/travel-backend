@@ -18,6 +18,18 @@ exports.create = (req, res) => {
     const error = new Error("Phone cannot be empty for Hotel!");
     error.statusCode = 400;
     throw error;
+  }else if (req.body.phone.length < 10) {
+    const err = new Error("Phone cannot be less than 10 digits for Hotel!");
+    err.statusCode = 500;
+    res.status(err.statusCode).send({
+      message:
+        err.message || "Error retrieving Hotels.",
+    });
+    throw err;
+  } else if (req.body.maps === undefined) {
+    const error = new Error("Maps cannot be empty for Hotel!");
+    error.statusCode = 400;
+    throw error;
   } else if (req.body.link === undefined) {
     const error = new Error("Link cannot be empty for Hotel!");
     error.statusCode = 400;
@@ -33,6 +45,7 @@ exports.create = (req, res) => {
     name: req.body.name,
     address: req.body.address,
     phone: req.body.phone,
+    maps: req.body.maps,
     link: req.body.link,
     photo: req.body.photo,
   };
@@ -119,6 +132,15 @@ exports.findOne = (req, res) => {
 };
 // Update a Hotel by the id in the request
 exports.update = (req, res) => {
+  if (req.body.phone.length < 10) {
+    const err = new Error("Phone cannot be less than 10 digits for Hotel!");
+    err.statusCode = 500;
+    res.status(err.statusCode).send({
+      message:
+        err.message || "Error retrieving Hotels.",
+    });
+    throw err;
+  }
   const id = req.params.id;
   Hotel.update(req.body, {
     where: { id: id },
