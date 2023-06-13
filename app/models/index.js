@@ -20,7 +20,6 @@ db.itineraryDayEvent = require("./itineraryDayEvent.model.js")(sequelize, Sequel
 db.site = require("./site.model.js")(sequelize, Sequelize);
 db.hotel = require("./hotel.model.js")(sequelize, Sequelize);
 db.subscription = require("./subscription.model.js")(sequelize, Sequelize);
-db.emailActivity = require("./emailActivity.model.js")(sequelize, Sequelize);
 db.session = require("./session.model.js")(sequelize, Sequelize);
 db.user = require("./user.model.js")(sequelize, Sequelize);
 
@@ -113,28 +112,6 @@ db.itinerary.hasMany(
   { foreignKey: { allowNull: false }, onDelete: "CASCADE"}
 );
 db.subscription.belongsTo(
-  db.itinerary,
-  { as: "itinerary" },
-  { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
-);
-
-//foreign key for emailActivity
-db.user.hasMany(
-  db.emailActivity,
-  { as: "emailActivity"},
-  { foreignKey: { allowNull: false }, onDelete: "CASCADE"}
-);
-db.emailActivity.belongsTo(
-  db.user,
-  { as: "user" },
-  { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
-);
-db.itinerary.hasMany(
-  db.emailActivity,
-  { as: "emailActivity"},
-  { foreignKey: { allowNull: false }, onDelete: "CASCADE"}
-);
-db.emailActivity.belongsTo(
   db.itinerary,
   { as: "itinerary" },
   { foreignKey: {allowNull: false }, onDelete: "CASCADE"}
