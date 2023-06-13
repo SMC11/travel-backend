@@ -1,6 +1,7 @@
-# Recipe Backend with Node
+# Travel Backend with Node
 
-This application allows users to create and maintain a list of recipes that have steps and ingredients. Please visit https://github.com/OC-ComputerScience/recipe-frontend for the Vue 3 frontend repository.
+This application allows users to create and maintain a list of itineraries that have days, sites & hotels. Please visit https://github.com/SMC11/travel-frontend for the Vue 3 frontend repository. 
+Please visit http://ec2-3-135-251-189.us-east-2.compute.amazonaws.com/travel-frontend for the Frontend Site. Please visit http://ec2-3-135-251-189.us-east-2.compute.amazonaws.com/phpmyadmin/index.php?route=/database/structure&server=1&db=travel_db for the Backend Database.
 
 #### Please note:
 
